@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Cheffgo — reserva chefs y bartenders a domicilio en Medellín y las principales ciudades de Colombia.">
+<title>Cheffgo · Reserva tu chef o bartender a domicilio</title>
+<style>
+  :root{
+    --naranja:#E8641E; --naranja-2:#c9500f; --naranja-cl:#FBE4D5;
+    --tinta:#22201e; --gris:#5b5651;
+    --crema:#fbf7f2; --linea:#eadfd3; --blanco:#ffffff;
+    --gris-cl:#6d675e; --verde:#1f7a44; --sombra:0 8px 30px rgba(40,25,10,.10);
+    --radio:16px; --max:1160px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;color:var(--tinta);background:var(--crema);line-height:1.55}
+  a{color:inherit}
+  img{max-width:100%;display:block}
+  h1,h2,h3{line-height:1.2;margin:0}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+  .btn{cursor:pointer;border:none;border-radius:999px;font-weight:700;font-size:15px;padding:12px 22px;transition:.15s;font-family:inherit}
+  .btn-primary{background:var(--naranja);color:#fff}
+  .btn-primary:hover{background:var(--naranja-2)}
+  .btn-ghost{background:transparent;color:var(--tinta);border:1.5px solid var(--linea)}
+  .btn-ghost:hover{border-color:var(--naranja);color:var(--naranja)}
+  .btn:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,.chip:focus-visible,.fav:focus-visible{outline:3px solid #1a6be0;outline-offset:2px}
+
+  .skip{position:absolute;left:-999px;top:8px;background:#fff;color:var(--naranja);padding:10px 16px;border-radius:8px;z-index:200;font-weight:700}
+  .skip:focus{left:8px}
+
+  header.top{position:sticky;top:0;z-index:100;background:rgba(251,247,242,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--linea)}
+  .topbar{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:23px;color:var(--naranja);text-decoration:none;letter-spacing:-.5px}
+  .logo .dot{width:30px;height:30px;border-radius:9px;background:var(--naranja);display:grid;place-items:center;color:#fff;font-size:17px}
+  nav.main{display:flex;gap:26px;align-items:center}
+  nav.main a{text-decoration:none;font-weight:600;font-size:15px;color:var(--gris)}
+  nav.main a:hover{color:var(--naranja)}
+  .demo-pill{background:var(--naranja-cl);color:var(--naranja-2);font-weight:700;font-size:12px;padding:5px 11px;border-radius:999px;border:1px solid #f2c9ae}
+  @media(max-width:820px){nav.main .hide-sm{display:none}}
+
+  .hero{padding:56px 0 34px;position:relative}
+  .hero h1{font-size:44px;letter-spacing:-1px;max-width:720px}
+  .hero h1 .hl{color:var(--naranja)}
+  .hero p.lead{font-size:19px;color:var(--gris);max-width:600px;margin:16px 0 0}
+  @media(max-width:640px){.hero h1{font-size:32px}.hero p.lead{font-size:17px}}
+
+  .search{margin-top:30px;background:#fff;border:1px solid var(--linea);border-radius:var(--radio);box-shadow:var(--sombra);padding:16px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1.1fr auto;gap:12px;align-items:end}
+  .field{display:flex;flex-direction:column;gap:6px;min-width:0}
+  .field label{font-size:12.5px;font-weight:700;color:var(--gris);text-transform:uppercase;letter-spacing:.4px}
+  .field input,.field select{font-family:inherit;font-size:15px;padding:11px 12px;border:1.5px solid var(--linea);border-radius:10px;background:#fff;color:var(--tinta);width:100%}
+  .search .btn{height:44px;white-space:nowrap}
+  @media(max-width:900px){.search{grid-template-columns:1fr 1fr}.search .btn{grid-column:1/-1}}
+
+  .trust{display:flex;gap:26px;flex-wrap:wrap;margin-top:22px;color:var(--gris);font-size:14px;font-weight:600}
+  .trust span{display:flex;align-items:center;gap:7px}
+  .trust .tick{color:var(--verde);font-weight:900}
+
+  section.block{padding:40px 0}
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:6px}
+  .sec-head h2{font-size:27px;letter-spacing:-.5px}
+  .sec-head p{margin:6px 0 0;color:var(--gris)}
+
+  .chips{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0 26px}
+  .chip{cursor:pointer;border:1.5px solid var(--linea);background:#fff;color:var(--gris);font-weight:600;font-size:14px;padding:9px 16px;border-radius:999px;font-family:inherit;transition:.15s}
+  .chip[aria-pressed="true"]{background:var(--naranja);border-color:var(--naranja);color:#fff}
+  .chip:hover{border-color:var(--naranja)}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){.grid{grid-template-columns:1fr}}
+  .card{position:relative;background:#fff;border:1px solid var(--linea);border-radius:var(--radio);overflow:hidden;box-shadow:0 3px 14px rgba(40,25,10,.05);text-align:left;transition:.18s;display:flex;flex-direction:column}
+  .card:hover{transform:translateY(-4px);box-shadow:var(--sombra)}
+  .card:focus-within{outline:3px solid #1a6be0;outline-offset:2px}
+  .card-open{background:none;border:none;padding:0;margin:0;font:inherit;color:inherit;text-align:left;cursor:pointer}
+  .card-open::after{content:"";position:absolute;inset:0;z-index:1}
+  .card-open:focus-visible{outline:none}
+  .card .ph{height:172px;position:relative;background:linear-gradient(135deg,#f3b98f,#E8641E)}
+  .card .ph img{width:100%;height:100%;object-fit:cover}
+  .badge{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.94);color:var(--tinta);font-weight:700;font-size:12px;padding:5px 11px;border-radius:999px}
+  .badge.bar{background:#22201e;color:#fff}
+  .fav{position:absolute;top:10px;right:10px;z-index:2;background:rgba(255,255,255,.92);border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:15px;display:grid;place-items:center}
+  .card .body{padding:15px 16px 17px;display:flex;flex-direction:column;gap:5px;flex:1}
+  .card h3{font-size:17.5px}
+  .card .meta{color:var(--gris-cl);font-size:13.5px}
+  .card .tags{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 2px}
+  .tag{background:var(--crema);border:1px solid var(--linea);color:var(--gris);font-size:12px;padding:3px 9px;border-radius:999px}
+  .card .foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:10px}
+  .stars{color:var(--naranja);font-weight:700;font-size:14px}
+  .stars .n{color:var(--gris);font-weight:600}
+  .price{font-weight:800;font-size:16px}
+  .price small{font-weight:600;color:var(--gris);font-size:12.5px}
+
+  .empty{grid-column:1/-1;text-align:center;color:var(--gris);padding:40px;border:1.5px dashed var(--linea);border-radius:var(--radio)}
+
+  .how{background:#fff;border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:26px}
+  @media(max-width:820px){.steps{grid-template-columns:1fr 1fr}}
+  .step{background:var(--crema);border:1px solid var(--linea);border-radius:var(--radio);padding:22px}
+  .step .num{width:38px;height:38px;border-radius:50%;background:var(--naranja);color:#fff;display:grid;place-items:center;font-weight:800;margin-bottom:12px}
+  .step h3{font-size:16.5px;margin-bottom:5px}
+  .step p{margin:0;color:var(--gris);font-size:14.5px}
+
+  footer{background:var(--tinta);color:#e9e2d9;padding:40px 0 26px;margin-top:10px}
+  footer .cols{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}
+  footer .logo{color:#fff}
+  footer a{color:#c9c1b6;text-decoration:none;font-size:14px;display:block;margin:6px 0}
+  footer a:hover{color:#fff}
+  footer h4{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:#c2b9ad;margin:0 0 8px}
+  .foot-bottom{border-top:1px solid #3a3733;margin-top:26px;padding-top:16px;color:#b3a99d;font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+  dialog{border:none;border-radius:20px;padding:0;max-width:840px;width:calc(100% - 32px);box-shadow:0 30px 80px rgba(0,0,0,.35);color:var(--tinta)}
+  dialog::backdrop{background:rgba(30,18,6,.55)}
+  .modal-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.92);border:none;width:38px;height:38px;border-radius:50%;font-size:20px;cursor:pointer;z-index:5;display:grid;place-items:center}
+  .modal-hero{height:210px;background:linear-gradient(135deg,#f3b98f,#E8641E);position:relative}
+  .modal-hero img{width:100%;height:100%;object-fit:cover}
+  .modal-body{padding:22px 26px 26px}
+  .modal-body h2{font-size:25px}
+  .modal-sub{color:var(--gris);margin:4px 0 0;font-size:15px}
+  .mrow{display:flex;gap:22px;flex-wrap:wrap;margin-top:16px}
+  .mcol{flex:1;min-width:240px}
+  .menu-list{list-style:none;padding:0;margin:8px 0 0}
+  .menu-list li{padding:9px 0;border-bottom:1px solid var(--linea);font-size:14.5px}
+  .menu-list li b{display:block}
+  .menu-list li span{color:var(--gris);font-size:13.5px}
+  .review{background:var(--crema);border:1px solid var(--linea);border-radius:12px;padding:12px 14px;margin-top:10px;font-size:14px}
+  .review .who{font-weight:700;font-size:13.5px;margin-bottom:3px}
+  .book-box{background:var(--crema);border:1px solid var(--linea);border-radius:14px;padding:16px}
+  .book-box .line{display:flex;justify-content:space-between;font-size:14.5px;padding:5px 0}
+  .book-box .line.tot{border-top:1.5px solid var(--linea);margin-top:6px;padding-top:10px;font-weight:800;font-size:17px}
+  .mini-field{display:flex;flex-direction:column;gap:5px;margin-bottom:11px}
+  .mini-field label{font-size:12.5px;font-weight:700;color:var(--gris)}
+  .mini-field input,.mini-field select{font-family:inherit;font-size:15px;padding:10px;border:1.5px solid var(--linea);border-radius:9px}
+
+  .pay-methods{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
+  .pay-opt{flex:1;min-width:120px;border:1.5px solid var(--linea);border-radius:11px;padding:12px;cursor:pointer;text-align:center;font-weight:700;font-size:14px;background:#fff}
+  .pay-opt[aria-pressed="true"]{border-color:var(--naranja);background:var(--naranja-cl);color:var(--naranja-2)}
+  .demo-note{background:#fff7ef;border:1px solid #f2c9ae;color:var(--naranja-2);border-radius:11px;padding:11px 14px;font-size:13.5px;font-weight:600;display:flex;gap:9px;align-items:flex-start;margin-bottom:14px}
+  .confirm{text-align:center;padding:14px 0}
+  .confirm .check{width:74px;height:74px;border-radius:50%;background:var(--verde);color:#fff;display:grid;place-items:center;font-size:40px;margin:0 auto 14px}
+  .code{display:inline-block;background:var(--crema);border:1.5px dashed var(--naranja);border-radius:10px;padding:9px 18px;font-weight:800;letter-spacing:1px;font-size:19px;color:var(--naranja-2);margin:8px 0}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<a class="skip" href="#catalogo">Saltar al catálogo</a>
+
+<header class="top">
+  <div class="wrap topbar">
+    <a class="logo" href="#top" aria-label="Cheffgo, inicio"><span class="dot" aria-hidden="true">🍳</span>Cheffgo</a>
+    <nav class="main" aria-label="Principal">
+      <a class="hide-sm" href="#como">Cómo funciona</a>
+      <a class="hide-sm" href="#catalogo">Explorar</a>
+      <a class="hide-sm" href="#">Ser chef / bartender</a>
+      <span class="demo-pill" title="Este es un demo: los pagos son simulados">● DEMO</span>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <h1>Reserva un <span class="hl">chef</span> o <span class="hl">bartender</span> a domicilio, tan fácil como un hotel.</h1>
+      <p class="lead">Elige tu ciudad y fecha, mira perfiles con menús y reseñas, y reserva pagando en línea. El profesional llega con todo listo: ingredientes, preparación, servicio y limpieza.</p>
+
+      <form class="search" id="buscador" aria-label="Buscar chef o bartender">
+        <div class="field">
+          <label for="f-ciudad">Ciudad</label>
+          <select id="f-ciudad">
+            <option value="">Todas las ciudades</option>
+            <option>Medellín</option>
+            <option>Bogotá</option>
+            <option>Cali</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-fecha">Fecha</label>
+          <input type="date" id="f-fecha">
+        </div>
+        <div class="field">
+          <label for="f-invitados">Invitados</label>
+          <input type="number" id="f-invitados" min="1" max="40" value="6" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label for="f-servicio">Servicio</label>
+          <select id="f-servicio">
+            <option value="">Chef o bartender</option>
+            <option value="chef">Solo chef</option>
+            <option value="bartender">Solo bartender</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" type="submit">Buscar</button>
+      </form>
+
+      <div class="trust" aria-label="Garantías">
+        <span><span class="tick" aria-hidden="true">✓</span> Profesionales verificados</span>
+        <span><span class="tick" aria-hidden="true">✓</span> Pago seguro en línea</span>
+        <span><span class="tick" aria-hidden="true">✓</span> Precio cerrado, todo incluido</span>
+        <span><span class="tick" aria-hidden="true">✓</span> Reseñas reales</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="catalogo">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <h2>Profesionales disponibles</h2>
+          <p id="result-count">Mostrando los mejores chefs y bartenders</p>
+        </div>
+      </div>
+
+      <div class="chips" role="group" aria-label="Filtrar por tipo de cocina">
+        <button class="chip" data-filter="all" aria-pressed="true">Todos</button>
+        <button class="chip" data-filter="chef" aria-pressed="false">👨‍🍳 Chefs</button>
+        <button class="chip" data-filter="bartender" aria-pressed="false">🍸 Bartenders</button>
+        <button class="chip" data-filter="Parrilla" aria-pressed="false">Parrilla</button>
+        <button class="chip" data-filter="Italiana" aria-pressed="false">Italiana</button>
+        <button class="chip" data-filter="Mariscos" aria-pressed="false">Mariscos</button>
+        <button class="chip" data-filter="Coctelería" aria-pressed="false">Coctelería de autor</button>
+      </div>
+
+      <div class="grid" id="grid" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="how block" id="como">
+    <div class="wrap">
+      <div class="sec-head"><div><h2>Cómo funciona</h2><p>De la idea a la mesa en cuatro pasos.</p></div></div>
+      <div class="steps">
+        <div class="step"><div class="num" aria-hidden="true">1</div><h3>Busca</h3><p>Elige ciudad, fecha y número de invitados.</p></div>
+        <div class="step"><div class="num" aria-hidden="true">2</div><h3>Elige</h3><p>Compara perfiles, menús, precios y reseñas.</p></div>
+        <div class="step"><div class="num" aria-hidden="true">3</div><h3>Reserva y paga</h3><p>Confirma con precio cerrado y pago en línea.</p></div>
+        <div class="step"><div class="num" aria-hidden="true">4</div><h3>Disfruta</h3><p>El profesional llega con todo. Tú solo recibes.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div style="max-width:260px">
+        <a class="logo" href="#top"><span class="dot" aria-hidden="true">🍳</span>Cheffgo</a>
+        <p style="color:#b6ada2;font-size:14px;margin-top:10px">Experiencias gastronómicas a domicilio en Medellín y las principales ciudades de Colombia.</p>
+      </div>
+      <div><h4>Explorar</h4><a href="#catalogo">Chefs</a><a href="#catalogo">Bartenders</a><a href="#como">Cómo funciona</a></div>
+      <div><h4>Profesionales</h4><a href="#">Ser chef</a><a href="#">Ser bartender</a><a href="#">Comisiones</a></div>
+      <div><h4>Cheffgo</h4><a href="#">Sobre nosotros</a><a href="#">Términos</a><a href="#">Privacidad</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Cheffgo · Demo con fines de validación</span>
+      <span>Los pagos de este demo son simulados. No se realiza ningún cobro real.</span>
+    </div>
+  </div>
+</footer>
+
+<dialog id="modal" aria-labelledby="m-title">
+  <button class="modal-close" id="m-close" aria-label="Cerrar">×</button>
+  <div id="modal-content"></div>
+</dialog>
+
+<script>
+"use strict";
+// ---------- Datos (demo, estáticos) ----------
+const PROS = [
+  {id:1,nombre:"Chef Valentina Ríos",tipo:"chef",ciudad:"Medellín",cocina:["Italiana","Parrilla"],precio:190000,rating:4.9,reviews:128,emoji:"🍝",img:"https://images.unsplash.com/photo-1556909212-d5b604d0c90d?w=600&q=70",bio:"Cocina italiana de autor y parrilla premium. 8 años de experiencia en restaurantes de Medellín.",menu:[["Entrada","Burrata con tomates confitados y albahaca"],["Principal","Risotto de hongos o lomo a la parrilla"],["Postre","Tiramisú artesanal"]],revs:[["Andrea M.","Una cena espectacular para nuestro aniversario. Valentina fue puntual y todo delicioso."],["Julián P.","El risotto estaba de otro nivel. Repetiremos."]]},
+  {id:2,nombre:"Bartender Andrés Gómez",tipo:"bartender",ciudad:"Medellín",cocina:["Coctelería"],precio:95000,rating:4.8,reviews:76,emoji:"🍸",img:"https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=600&q=70",bio:"Coctelería de autor y clásicos. Monto barra completa para tu evento con insumos incluidos.",menu:[["Bienvenida","Gin tonic de la casa"],["Autor","Old Fashioned ahumado en vivo"],["Sin alcohol","Mocktails de frutas locales"]],revs:[["Camila R.","La barra fue el alma de la fiesta. Súper recomendado."],["Diego S.","Cocteles increíbles y muy buen show."]]},
+  {id:3,nombre:"Chef Mateo Herrera",tipo:"chef",ciudad:"Bogotá",cocina:["Mariscos","Parrilla"],precio:220000,rating:5.0,reviews:94,emoji:"🦐",img:"https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&q=70",bio:"Especialista en mariscos y cocina de mar. Producto fresco del día.",menu:[["Entrada","Ceviche de camarón y pesca blanca"],["Principal","Cazuela de mariscos o salmón sellado"],["Postre","Cheesecake de maracuyá"]],revs:[["Laura V.","El ceviche estaba perfecto. Atención impecable."],["Sofía L.","Cena de cumpleaños redonda, gracias Mateo."]]},
+  {id:4,nombre:"Chef Daniela Ospina",tipo:"chef",ciudad:"Medellín",cocina:["Italiana"],precio:170000,rating:4.7,reviews:53,emoji:"🍕",img:"https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=70",bio:"Pastas y pizzas artesanales hechas en casa. Ideal para grupos y familias.",menu:[["Entrada","Focaccia recién horneada"],["Principal","Pastas frescas a elección"],["Postre","Panna cotta"]],revs:[["Nicolás T.","La pasta fresca vale cada peso. Muy amable."],["Paula G.","Perfecta para un plan en familia."]]},
+  {id:5,nombre:"Bartender Sara Muñoz",tipo:"bartender",ciudad:"Cali",cocina:["Coctelería"],precio:105000,rating:4.9,reviews:61,emoji:"🍹",img:"https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=600&q=70",bio:"Mixología tropical y coctelería de autor con frutas del Valle. Barra montada incluida.",menu:[["Bienvenida","Margarita de maracuyá"],["Autor","Mojito de lulo y hierbabuena"],["Sin alcohol","Limonada de coco"]],revs:[["Valeria C.","La mejor barra que hemos tenido en casa."],["Andrés F.","Sara es una crack, todo delicioso."]]},
+  {id:6,nombre:"Chef Santiago Ruiz",tipo:"chef",ciudad:"Bogotá",cocina:["Parrilla"],precio:200000,rating:4.8,reviews:88,emoji:"🥩",img:"https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=70",bio:"Asador profesional. Cortes premium a la parrilla frente a tus invitados.",menu:[["Entrada","Provoleta y chorizo artesanal"],["Principal","Bife de chorizo y costillas BBQ"],["Postre","Flan de la casa"]],revs:[["Óscar M.","La parrillada fue un éxito total."],["Marcela D.","Cortes de primera y muy buen ambiente."]]}
+];
+
+const COP = n => "$" + n.toLocaleString("es-CO") + " COP";
+const COMISION = 0.18; // 18% servicio Cheffgo
+
+// ---------- Utilidades DOM seguras (nunca innerHTML con datos) ----------
+const $ = s => document.querySelector(s);
+function el(tag, props={}, ...kids){
+  const n=document.createElement(tag);
+  for(const[k,v]of Object.entries(props)){
+    if(k==="class")n.className=v;
+    else if(k==="text")n.textContent=v;
+    else if(k.startsWith("on")&&typeof v==="function")n.addEventListener(k.slice(2),v);
+    else if(v!==false&&v!=null)n.setAttribute(k,v);
+  }
+  for(const kid of kids){if(kid!=null)n.append(kid.nodeType?kid:document.createTextNode(kid));}
+  return n;
+}
+const stars = r => "★ "+r.toFixed(1);
+
+let filtro = "all";
+
+function pasa(p){
+  const ciudad=$("#f-ciudad").value, serv=$("#f-servicio").value;
+  if(ciudad && p.ciudad!==ciudad) return false;
+  if(serv && p.tipo!==serv) return false;
+  if(filtro==="all") return true;
+  if(filtro==="chef"||filtro==="bartender") return p.tipo===filtro;
+  return p.cocina.includes(filtro);
+}
+
+function tarjeta(p){
+  const img = el("img",{alt:"Plato representativo de "+p.nombre, loading:"lazy", src:p.img});
+  const ph = el("div",{class:"ph"},
+    el("span",{class:"badge"+(p.tipo==="bartender"?" bar":""),text:p.tipo==="chef"?"Chef":"Bartender"}),
+    el("button",{class:"fav","aria-label":"Guardar "+p.nombre+" en favoritos",type:"button",onclick:e=>{e.stopPropagation();e.currentTarget.textContent=e.currentTarget.textContent==="♡"?"♥":"♡";}},"♡"),
+    img
+  );
+  img.addEventListener("error",()=>{img.remove();ph.style.display="grid";ph.style.placeItems="center";ph.append(el("span",{"aria-hidden":"true",style:"font-size:52px",text:p.emoji}));});
+
+  // Patrón "stretched link": el botón "Ver perfil" cubre toda la tarjeta vía ::after.
+  // El corazón de favoritos queda por encima (z-index) y NO anidado dentro del botón.
+  const openBtn = el("button",{class:"card-open",type:"button","aria-label":"Ver perfil de "+p.nombre,onclick:()=>abrirPerfil(p)}, p.nombre);
+  const card = el("article",{class:"card"},
+    ph,
+    el("div",{class:"body"},
+      el("h3",{}, openBtn),
+      el("div",{class:"meta",text:"📍 "+p.ciudad}),
+      el("div",{class:"tags"},...p.cocina.map(c=>el("span",{class:"tag",text:c}))),
+      el("div",{class:"foot"},
+        el("div",{class:"stars"},stars(p.rating)," ",el("span",{class:"n",text:"("+p.reviews+")"})),
+        el("div",{class:"price"},COP(p.precio),el("br"),el("small",{text:"por persona"}))
+      )
+    )
+  );
+  return card;
+}
+
+function render(){
+  const grid=$("#grid"); grid.textContent="";
+  const items=PROS.filter(pasa);
+  $("#result-count").textContent = items.length
+    ? "Mostrando "+items.length+" profesional"+(items.length>1?"es":"")+" · precio todo incluido por persona"
+    : "";
+  if(!items.length){grid.append(el("div",{class:"empty",text:"No encontramos profesionales con esos filtros. Prueba con otra ciudad o quita filtros."}));return;}
+  items.forEach(p=>grid.append(tarjeta(p)));
+}
+
+// ---------- Modal ----------
+const modal=$("#modal"), mc=$("#modal-content");
+let lastFocus=null;
+function cerrar(){modal.close();}
+$("#m-close").addEventListener("click",cerrar);
+modal.addEventListener("close",()=>{if(lastFocus)lastFocus.focus();});
+modal.addEventListener("click",e=>{const r=modal.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)cerrar();});
+
+function heroModal(p){
+  const img=el("img",{alt:"Plato de "+p.nombre,src:p.img});
+  const h=el("div",{class:"modal-hero"},img);
+  img.addEventListener("error",()=>{img.remove();h.style.display="grid";h.style.placeItems="center";h.append(el("span",{"aria-hidden":"true",style:"font-size:80px",text:p.emoji}));});
+  return h;
+}
+
+function abrirPerfil(p){
+  lastFocus=document.activeElement;
+  mc.textContent="";
+  const invitados=Math.max(1,parseInt($("#f-invitados").value)||6);
+
+  mc.append(
+    heroModal(p),
+    el("div",{class:"modal-body"},
+      el("h2",{id:"m-title",text:p.nombre}),
+      el("p",{class:"modal-sub"},"📍 "+p.ciudad+"  ·  ",el("span",{class:"stars",text:stars(p.rating)})," ",p.reviews+" reseñas"),
+      el("p",{style:"margin-top:12px;color:#5b5651",text:p.bio}),
+      el("div",{class:"mrow"},
+        el("div",{class:"mcol"},
+          el("h3",{style:"font-size:17px",text:"Menú de ejemplo"}),
+          el("ul",{class:"menu-list"},...p.menu.map(m=>el("li",{},el("b",{text:m[0]}),el("span",{text:m[1]})))),
+          el("h3",{style:"font-size:17px;margin-top:18px",text:"Reseñas"}),
+          ...p.revs.map(r=>el("div",{class:"review"},el("div",{class:"who",text:r[0]}),el("div",{text:"“"+r[1]+"”"})))
+        ),
+        el("div",{class:"mcol"},construirReserva(p,invitados))
+      )
+    )
+  );
+  if(typeof modal.showModal==="function")modal.showModal();else modal.setAttribute("open","");
+  $("#m-close").focus();
+}
+
+function construirReserva(p,invitadosInit){
+  const box=el("div",{class:"book-box"});
+  const titulo=el("h3",{style:"font-size:17px;margin-bottom:10px",text:"Reserva tu experiencia"});
+
+  const fFecha=el("input",{type:"date",id:"b-fecha",value:$("#f-fecha").value||""});
+  const fInv=el("input",{type:"number",id:"b-inv",min:"1",max:"40",value:invitadosInit,inputmode:"numeric"});
+
+  const lineSub=el("span",{}), lineCom=el("span",{}), lineTot=el("span",{});
+  function recalc(){
+    const inv=Math.max(1,Math.min(40,parseInt(fInv.value)||1));
+    const sub=p.precio*inv, com=Math.round(sub*COMISION), tot=sub+com;
+    lineSub.textContent=COP(sub);
+    lineCom.textContent=COP(com);
+    lineTot.textContent=COP(tot);
+    box.dataset.total=tot;box.dataset.inv=inv;
+  }
+  fInv.addEventListener("input",recalc);
+
+  const btn=el("button",{class:"btn btn-primary",type:"button",style:"width:100%;margin-top:6px",
+    onclick:()=>{if(!fFecha.value){fFecha.focus();fFecha.reportValidity&&fFecha.setCustomValidity("Elige una fecha");fFecha.reportValidity();return;}checkout(p,parseInt(box.dataset.inv),parseInt(box.dataset.total),fFecha.value);}},
+    "Reservar ahora");
+
+  box.append(
+    titulo,
+    el("div",{class:"mini-field"},el("label",{for:"b-fecha",text:"Fecha del evento"}),fFecha),
+    el("div",{class:"mini-field"},el("label",{for:"b-inv",text:"Número de invitados"}),fInv),
+    el("div",{class:"line"},el("span",{text:p.precio.toLocaleString("es-CO")+" × invitados"}),lineSub),
+    el("div",{class:"line"},el("span",{text:"Servicio Cheffgo (18%)"}),lineCom),
+    el("div",{class:"line tot"},el("span",{text:"Total"}),lineTot),
+    btn,
+    el("p",{style:"font-size:12px;color:#6d675e;text-align:center;margin:10px 0 0",text:"Ingredientes, preparación, servicio y limpieza incluidos."})
+  );
+  recalc();
+  return box;
+}
+
+// ---------- Checkout simulado ----------
+let metodo="Nequi";
+function checkout(p,inv,total,fecha){
+  mc.textContent="";
+  const opts=["Nequi","PSE","Tarjeta"];
+  const cont=el("div",{class:"modal-body",style:"padding-top:26px"});
+
+  const methodRow=el("div",{class:"pay-methods",role:"group","aria-label":"Método de pago"});
+  const optBtns=opts.map(o=>el("button",{class:"pay-opt",type:"button","aria-pressed":String(o===metodo),
+    onclick:()=>{metodo=o;optBtns.forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.o===o)));}},o));
+  optBtns.forEach(b=>{b.dataset.o=b.textContent;methodRow.append(b);});
+
+  cont.append(
+    el("h2",{id:"m-title",text:"Confirmar y pagar"}),
+    el("p",{class:"modal-sub",text:p.nombre+" · "+p.ciudad}),
+    el("div",{class:"demo-note"},el("span",{"aria-hidden":"true",text:"🔒"}),
+      el("span",{text:"Demo: este pago es simulado. No se cobra dinero real ni se piden datos financieros reales."})),
+    el("div",{class:"book-box",style:"margin-bottom:14px"},
+      el("div",{class:"line"},el("span",{text:"Fecha"}),el("span",{text:fecha})),
+      el("div",{class:"line"},el("span",{text:"Invitados"}),el("span",{text:String(inv)})),
+      el("div",{class:"line tot"},el("span",{text:"Total a pagar"}),el("span",{text:COP(total)}))
+    ),
+    el("h3",{style:"font-size:16px;margin-bottom:6px",text:"Método de pago"}),
+    methodRow,
+    el("div",{class:"mini-field"},el("label",{for:"c-nombre",text:"Nombre de quien reserva"}),el("input",{id:"c-nombre",type:"text",placeholder:"Tu nombre",autocomplete:"name"})),
+    el("div",{class:"mini-field"},el("label",{for:"c-tel",text:"Teléfono de contacto"}),el("input",{id:"c-tel",type:"tel",placeholder:"300 000 0000",autocomplete:"tel"})),
+    el("div",{style:"display:flex;gap:10px;margin-top:8px"},
+      el("button",{class:"btn btn-ghost",type:"button",onclick:()=>abrirPerfil(p)},"Volver"),
+      el("button",{class:"btn btn-primary",type:"button",style:"flex:1",
+        onclick:()=>confirmar(p,inv,total,fecha)},"Pagar "+COP(total)+" (demo)")
+    )
+  );
+  mc.append(cont);
+  $("#m-close").focus();
+}
+
+function confirmar(p,inv,total,fecha){
+  const code="CHF-"+Math.random().toString(36).slice(2,7).toUpperCase();
+  mc.textContent="";
+  mc.append(el("div",{class:"modal-body"},
+    el("div",{class:"confirm"},
+      el("div",{class:"check","aria-hidden":"true"},"✓"),
+      el("h2",{id:"m-title",text:"¡Reserva confirmada!"}),
+      el("p",{class:"modal-sub",style:"margin-top:8px",text:"Tu experiencia con "+p.nombre+" quedó agendada para el "+fecha+"."}),
+      el("div",{},el("div",{class:"code",text:code})),
+      el("p",{style:"color:#5b5651;font-size:14.5px",text:inv+" invitados · "+COP(total)+" · Pago simulado"}),
+      el("p",{style:"color:#6d675e;font-size:13px;margin-top:6px",text:"En la versión real recibirías esta confirmación por correo y WhatsApp."}),
+      el("button",{class:"btn btn-primary",type:"button",style:"margin-top:14px",onclick:cerrar},"Listo")
+    )
+  ));
+  $("#m-close").focus();
+}
+
+// ---------- Eventos ----------
+document.querySelectorAll(".chip").forEach(ch=>ch.addEventListener("click",()=>{
+  document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed","false"));
+  ch.setAttribute("aria-pressed","true");
+  filtro=ch.dataset.filter;render();
+}));
+$("#buscador").addEventListener("submit",e=>{e.preventDefault();render();document.getElementById("catalogo").scrollIntoView();});
+$("#f-ciudad").addEventListener("change",render);
+$("#f-servicio").addEventListener("change",render);
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&modal.open)cerrar();});
+
+(function(){const t=new Date();const iso=t.toISOString().slice(0,10);$("#f-fecha").min=iso;})();
+render();
+</script>
+</body>
+</html>
+ 

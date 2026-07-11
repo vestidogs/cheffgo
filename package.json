@@ -1,0 +1,16 @@
+{
+  "name": "cheffgo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cheffgo — demo web para reservar chefs y bartenders a domicilio en Colombia.",
+  "scripts": {
+    "audit:func": "node audits/audit_func.js",
+    "audit:a11y": "node audits/audit_a11y.js",
+    "audit:sec": "node audits/audit_sec.js",
+    "audit": "npm run audit:func && npm run audit:a11y && npm run audit:sec"
+  },
+  "devDependencies": {
+    "jsdom": "^24.0.0",
+    "axe-core": "^4.10.0"
+  }
+}

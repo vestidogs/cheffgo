@@ -1,0 +1,14 @@
+# Dependencias
+node_modules/
+package-lock.json
+
+# Artefactos de build / render
+*.pdf
+pg-*.jpg
+page-*.jpg
+/tmp/
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log
